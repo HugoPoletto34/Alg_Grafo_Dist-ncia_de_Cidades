@@ -1,3 +1,7 @@
+package models;
+
+import java.util.ArrayList;
+
 public class Vertice {
     private static final int MAX_ARESTAS = 100;
     private int qtArestas;    
@@ -16,6 +20,10 @@ public class Vertice {
         this.id = id;
         this.qtArestas=0;
         this.arestas = new Aresta[MAX_ARESTAS];
+    }
+
+    public int getId() {
+        return this.id;
     }
 
     /**
@@ -55,6 +63,16 @@ public class Vertice {
      */
     public int grau(){
         return this.qtArestas;
+    }
+
+    public ArrayList<Vertice> getAllVerticesConectados(){
+        ArrayList<Vertice> vertices = new ArrayList<>();
+
+        for (int i = 0; i < qtArestas; i++) {
+            vertices.add(arestas[i].getDestino());
+        }
+
+        return vertices;
     }
 
     

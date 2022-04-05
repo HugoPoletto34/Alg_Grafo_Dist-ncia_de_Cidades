@@ -1,5 +1,7 @@
-/** 
- * Classe básica para um Grafo simples
+package models;
+
+/**
+ * Classe básica para um models.Grafo simples
  */
 public class Grafo {
     public static final int MAX_VERTICES = 100;

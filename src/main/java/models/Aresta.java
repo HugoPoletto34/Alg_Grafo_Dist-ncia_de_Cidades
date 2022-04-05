@@ -1,3 +1,5 @@
+package models;
+
 public class Aresta {
 
     private int peso;
