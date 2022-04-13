@@ -5,7 +5,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class Vertice {
-    private int qtArestas;
     private int id;
     private List<Aresta> arestas;
 
@@ -15,7 +14,6 @@ public class Vertice {
      */
     public Vertice(int id){
         this.id = id;
-        this.qtArestas=0;
         this.arestas = new LinkedList<>();
     }
 
@@ -25,7 +23,7 @@ public class Vertice {
 
     private boolean existeAresta(Vertice dest){
         boolean resposta = false;
-        for(int i=0; i<this.qtArestas; i++){
+        for(int i=0; i<this.arestas.size(); i++){
             if(this.arestas.get(i).getDestino() == dest){
                 resposta = true;
                 break;
@@ -39,19 +37,18 @@ public class Vertice {
         if(!this.existeAresta(dest)){
             Aresta nova = new Aresta(peso, dest);
             this.arestas.add(nova);
-            this.qtArestas++;
             dest.addAresta(peso, this);
         }
     }
 
     public int grau(){
-        return this.qtArestas;
+        return this.arestas.size();
     }
 
     public ArrayList<Vertice> getAllVerticesConectados(){
         ArrayList<Vertice> vertices = new ArrayList<>();
 
-        for (int i = 0; i < qtArestas; i++) {
+        for (int i = 0; i < this.arestas.size(); i++) {
             vertices.add(arestas.get(i).getDestino());
         }
 
@@ -61,9 +58,9 @@ public class Vertice {
     @Override
     public String toString(){
         StringBuilder aux = new StringBuilder("Vértice("+this.id+")=[");
-        for(int i = 0; i<this.qtArestas; i++) {
+        for(int i = 0; i<this.arestas.size(); i++) {
             aux.append(this.arestas.get(i).getDestino().id);
-            if (i < this.qtArestas - 1)
+            if (i < this.arestas.size() - 1)
                 aux.append(", ");
         }
 

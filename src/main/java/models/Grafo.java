@@ -8,7 +8,6 @@ import java.util.List;
  */
 public class Grafo {
     private static int ultimoId = 0;
-    protected int qtdVertices;
 
     /**
      * Um grafo tem um vetor de vértices, que conterão as arestas
@@ -19,7 +18,6 @@ public class Grafo {
      * Construtor. Cria um grafo vazio com capacidade para MAX_VERTICES
      */
     public Grafo(){
-        this.qtdVertices = 0;
         this.vertices = new LinkedList<>();
     }
 
@@ -41,7 +39,6 @@ public class Grafo {
     public void addVertice(){
         Vertice novo = new Vertice(ultimoId);
         this.vertices.add(novo);
-        this.qtdVertices++;
         ultimoId++;
     }
 
@@ -52,8 +49,8 @@ public class Grafo {
     public boolean completo(){
         boolean resposta = true;
         
-        for(int i=0; i<this.qtdVertices; i++){
-            if(this.vertices.get(i).grau()!= (this.qtdVertices-1)){
+        for(int i=0; i<this.vertices.size(); i++){
+            if(this.vertices.get(i).grau()!= (this.vertices.size() - 1)){
                 resposta = false;
                 break;
             }
@@ -65,7 +62,7 @@ public class Grafo {
     public String toString(){
         StringBuilder aux = new StringBuilder("Grafo:");
 
-        for(int i=0; i<this.qtdVertices; i++){
+        for(int i=0; i<this.vertices.size(); i++){
             aux.append(" --- " + this.vertices.get(i).toString());
         }
 
