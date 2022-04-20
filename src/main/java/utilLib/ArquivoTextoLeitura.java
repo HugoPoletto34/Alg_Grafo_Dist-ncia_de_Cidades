@@ -1,16 +1,18 @@
+package utilLib;
+
 import java.io.*;
 
 public class ArquivoTextoLeitura {
 
 	private BufferedReader entrada;
 	
-	public void abrirArquivo(String nomeArquivo){	
+	public ArquivoTextoLeitura(String nomeArquivo) {
 		
 		try {
 			entrada = new BufferedReader(new FileReader(nomeArquivo));
 		}
 		catch (FileNotFoundException excecao) {
-			System.out.println("Arquivo não encontrado");
+			System.out.println("Arquivo n�o encontrado");
 		}
 	}
 	
@@ -24,20 +26,24 @@ public class ArquivoTextoLeitura {
 		}
 	}
 	
-	public String ler() {
+	@SuppressWarnings("finally")
+	public String lerBuffer() {
 		
-		String textoEntrada;
+		String textoEntrada = null;
 		
 		try {
 			textoEntrada = entrada.readLine();
 		}
-		catch (EOFException excecao) { //Exceção de final de arquivo.
-			return null;
+		catch (EOFException excecao) { //Exce��o de final de arquivo.
+			textoEntrada = null;
 		}
 		catch (IOException excecao) {
 			System.out.println("Erro de leitura: " + excecao);
-			return null;
+			textoEntrada = null;
 		}
-		return textoEntrada;
+		finally {
+			return textoEntrada;
+		}
 	}
 }
+

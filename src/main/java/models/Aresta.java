@@ -2,16 +2,16 @@ package models;
 
 public class Aresta {
 
-    private int peso;
+    private double quilometros;
     private Vertice destino;
 
-    public Aresta(int peso, Vertice dest){
-        this.peso = peso;
+    public Aresta(double peso, Vertice dest){
+        this.quilometros = peso;
         this.destino = dest;
     }
 
-    public int getPeso() {
-        return peso;
+    public double getPeso() {
+        return this.quilometros;
     }
 
     public Vertice getDestino() {
