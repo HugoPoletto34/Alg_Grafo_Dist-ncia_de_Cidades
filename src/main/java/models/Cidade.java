@@ -1,19 +1,14 @@
 package models;
 
-public class VerticeCidade extends Vertice {
+public class Cidade {
   private double latitude;
   private double longitude;
   private String nome;
 
-  public VerticeCidade(int id, String nome, double latitude, double longitude) {
-    super(id);
+  public Cidade(String nome, double latitude, double longitude) {
     this.nome = nome;
     this.latitude = latitude;
     this.longitude = longitude;
-  }
-  
-  public VerticeCidade(int id) {
-	  super(id);
   }
 
   public String getNome() {
@@ -43,5 +38,10 @@ public class VerticeCidade extends Vertice {
   public double paraDouble(String palavra) {
 	  return Double.parseDouble(palavra);
 	}
+
+  @Override
+  public String toString() {
+    return this.nome;
+  }
 
 }

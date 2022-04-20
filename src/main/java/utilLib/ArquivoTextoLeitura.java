@@ -1,18 +1,18 @@
-package app;
+package utilLib;
 
 import java.io.*;
 
-class ArquivoTextoLeitura {
+public class ArquivoTextoLeitura {
 
 	private BufferedReader entrada;
 	
-	ArquivoTextoLeitura(String nomeArquivo) {	
+	public ArquivoTextoLeitura(String nomeArquivo) {
 		
 		try {
 			entrada = new BufferedReader(new FileReader(nomeArquivo));
 		}
 		catch (FileNotFoundException excecao) {
-			System.out.println("Arquivo não encontrado");
+			System.out.println("Arquivo nï¿½o encontrado");
 		}
 	}
 	
@@ -34,7 +34,7 @@ class ArquivoTextoLeitura {
 		try {
 			textoEntrada = entrada.readLine();
 		}
-		catch (EOFException excecao) { //Exceção de final de arquivo.
+		catch (EOFException excecao) { //Exceï¿½ï¿½o de final de arquivo.
 			textoEntrada = null;
 		}
 		catch (IOException excecao) {

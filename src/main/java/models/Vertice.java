@@ -4,9 +4,10 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-public class Vertice {
+public class Vertice<T> {
     private int id;
     private List<Aresta> arestas;
+    protected T item;
 
     /**
      * Construtor para criação de vértice identificado
@@ -33,7 +34,7 @@ public class Vertice {
 
     }
 
-    public void addAresta(int peso, Vertice dest){
+    public void addAresta(double peso, Vertice dest){
         if(!this.existeAresta(dest)){
             Aresta nova = new Aresta(peso, dest);
             this.arestas.add(nova);
@@ -57,15 +58,23 @@ public class Vertice {
 
     @Override
     public String toString(){
-        StringBuilder aux = new StringBuilder("Vértice("+this.id+")=[");
+        StringBuilder aux = new StringBuilder("Vértice("+this.getItem()+") = [");
         for(int i = 0; i<this.arestas.size(); i++) {
-            aux.append(this.arestas.get(i).getDestino().id);
+            aux.append(this.arestas.get(i).getDestino().item);
             if (i < this.arestas.size() - 1)
                 aux.append(", ");
         }
 
-        aux.append("]");
+        aux.append("]  \n");
 
         return aux.toString();
+    }
+
+    public void setItem(T cidade) {
+        this.item = cidade;
+    }
+
+    public T getItem() {
+        return item;
     }
 }

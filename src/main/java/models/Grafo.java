@@ -3,46 +3,30 @@ package models;
 import java.util.LinkedList;
 import java.util.List;
 
-/**
- * Classe básica para um models.Grafo simples
- */
-public class Grafo {
+public class Grafo<T> {
     private static int ultimoId = 0;
 
-    /**
-     * Um grafo tem um vetor de vértices, que conterão as arestas
-     */
-    protected List<Vertice> vertices;
+    protected List<Vertice<T>> vertices;
 
-    /**
-     * Construtor. Cria um grafo vazio com capacidade para MAX_VERTICES
-     */
     public Grafo(){
         this.vertices = new LinkedList<>();
     }
 
-    /**
-     * Método de acesso ao vetor de vértices
-     * @return Vetor com vértices do grafo
-     */
-    public List<Vertice> getVertices(){
+    public List<Vertice<T>> getVertices(){
             return this.vertices;
     }
 
-    public Vertice getVertice(int indice) {
+    public Vertice<T> getVertice(int indice) {
         return this.vertices.get(indice);
     }
 
-    /**
-     * Adiciona, se possível, um vértice ao grafo. O vértice é auto-nomeado com o próximo id disponível.
-     */
     public void addVertice(){
-        Vertice novo = new Vertice(ultimoId);
+        Vertice<T> novo = new Vertice<>(ultimoId);
         this.vertices.add(novo);
         ultimoId++;
     }
 
-    public void addAresta(Vertice origem, Vertice destino){
+    public void addAresta(Vertice<T> origem, Vertice<T> destino){
         origem.addAresta(1, destino);
     }
 
@@ -62,8 +46,8 @@ public class Grafo {
     public String toString(){
         StringBuilder aux = new StringBuilder("Grafo:");
 
-        for(int i=0; i<this.vertices.size(); i++){
-            aux.append(" --- " + this.vertices.get(i).toString());
+        for (Vertice<T> vertex : this.vertices) {
+            aux.append(" --- " + vertex.toString());
         }
 
         return aux.toString();

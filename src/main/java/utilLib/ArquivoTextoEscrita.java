@@ -1,3 +1,5 @@
+package utilLib;
+
 import java.io.*;
 
 public class ArquivoTextoEscrita {

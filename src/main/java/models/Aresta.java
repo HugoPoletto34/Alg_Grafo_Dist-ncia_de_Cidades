@@ -5,7 +5,7 @@ public class Aresta {
     private double quilometros;
     private Vertice destino;
 
-    public Aresta(int peso, Vertice dest){
+    public Aresta(double peso, Vertice dest){
         this.quilometros = peso;
         this.destino = dest;
     }
