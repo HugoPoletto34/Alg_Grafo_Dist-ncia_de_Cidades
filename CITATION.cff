@@ -1,0 +1,25 @@
+# This CITATION.cff file was generated with cffinit.
+# Visit https://bit.ly/cffinit to generate yours today!
+
+cff-version: 1.2.0
+title: Sistema de Monitorias
+message: Please cite this software using these metadata.
+type: software
+authors:
+  - given-names: Hugo
+    family-names: Poletto Alacoque Gomes
+  - given-names: Pedro
+    family-names: Márcio Oliveira Silveira
+  - given-names: Pedro
+    family-names: Aires Martins Brito
+  - given-names: José
+    family-names: Maurício Guimarães França
+repository-code: >-
+  https://github.com/HugoPoletto34/Alg_Grafo_Distancia_de_Cidades
+keywords:
+  - Brasil
+  - Calculo
+  - Latitude-and-longitude
+license: CC-BY-4.0
+version: 1.0.0
+date-released: '2022-06-19'
