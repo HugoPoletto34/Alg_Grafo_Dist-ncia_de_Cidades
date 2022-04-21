@@ -85,11 +85,14 @@ public class GrafoCidades extends Grafo<Cidade> {
 
     // https://stackoverflow.com/questions/27928/calculate-distance-between-two-latitude-longitude-points-haversine-formula
     public static double calcularDistanciaCidades(Cidade v1, Cidade v2) {
+        // =Raio*ACOS(COS(RADIANOS(90-Latitude_1))*COS(RADIANOS(90-Latitude_2))+SEN(RADIANOS(90-Latitude_1))*SEN(RADIANOS(90-Latitude_2))*COS(RADIANOS(Longitude_1-Longitude_2))*Fator_Ajuste
         final double RAIO_DA_TERRA = 6371;
+//        final double FATOR_AJUSTE = 1.15;
+//        return RAIO_DA_TERRA*Math.acos(grausParaRadianos(90-v1.getLatitude()))*Math.cos(grausParaRadianos(90- v2.getLatitude()))+Math.sin(grausParaRadianos(90-v1.getLatitude()))*Math.sin(grausParaRadianos(90-v2.getLatitude()))*Math.cos(grausParaRadianos(v1.getLongitude()-v2.getLongitude()))*FATOR_AJUSTE;
         double dLat = grausParaRadianos(v2.getLatitude() - v1.getLatitude());
         double dLng = grausParaRadianos(v2.getLongitude() - v1.getLongitude());
 
-        double a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.cos(grausParaRadianos(v1.getLatitude()))
+        double a = Math.pow(Math.sin(dLat / 2), 2) + Math.cos(grausParaRadianos(v1.getLatitude()))
                 * Math.cos(grausParaRadianos(v2.getLatitude())) * Math.sin(dLng / 2) * Math.sin(dLng / 2);
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
         return RAIO_DA_TERRA * c;
