@@ -112,4 +112,25 @@ public class GrafoCidades extends Grafo<Cidade> {
 
         return aux.toString();
     }
+    
+    public void buscaEmLargura(){
+        ArrayList<Vertice<Cidade>> marcados = new ArrayList<Vertice<Cidade>>();
+        ArrayList<Vertice<Cidade>> fila = new ArrayList<Vertice<Cidade>>();
+        Vertice<Cidade> atual = this.vertices.get(0);
+        marcados.add(atual);
+        System.out.println(atual.getItem());
+        fila.add(atual);
+        while(fila.size() > 0){
+            Vertice<Cidade> visitado = fila.get(0);
+            for(int i=0; i < visitado.getArestas().size(); i++){
+                Vertice<Cidade> proximo = visitado.getArestas().get(i).getDestino();
+                if (!marcados.contains(proximo)){ 
+                    marcados.add(proximo);
+                    System.out.println(proximo.getItem());
+                    fila.add(proximo);
+                }
+            }
+            fila.remove(0);
+        }
+    }
 }

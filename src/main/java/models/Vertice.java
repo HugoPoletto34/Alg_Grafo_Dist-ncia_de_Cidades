@@ -7,7 +7,15 @@ import java.util.List;
 public class Vertice<T> {
     private int id;
     private List<Aresta> arestas;
-    protected T item;
+    public List<Aresta> getArestas() {
+		return arestas;
+	}
+
+	public void setArestas(List<Aresta> arestas) {
+		this.arestas = arestas;
+	}
+
+	protected T item;
 
     /**
      * Construtor para criação de vértice identificado

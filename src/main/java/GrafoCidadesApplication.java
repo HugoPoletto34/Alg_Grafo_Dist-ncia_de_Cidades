@@ -1,7 +1,7 @@
-import models.*;
-import utilLib.ArquivoTextoEscrita;
-
 import java.time.LocalDate;
+
+import models.GrafoCidades;
+import utilLib.ArquivoTextoEscrita;
 
 public class GrafoCidadesApplication {
 	public static void main(String[] args) {
@@ -19,5 +19,11 @@ public class GrafoCidadesApplication {
 		arq.fecharArquivo();
 
 		System.out.println("Relatório gerado com sucesso!");
+		
+		System.out.println("\nBusca em largura:\n");
+		
+		grafoCidades.buscaEmLargura();
 	}
+	
+	
 }
