@@ -3,13 +3,38 @@ package models;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Vertice<T> {
     private int id;
     private List<Aresta> arestas;
+    private boolean visitado = false;
+    private boolean marcado = false;
+
+    public void setVisitado(boolean visitado) {
+        this.visitado = visitado;
+    }
+
+    public void setMarcado(boolean marcado) {
+        this.marcado = marcado;
+    }
+
+    public boolean isVisitado() {
+        return visitado;
+    }
+
     public List<Aresta> getArestas() {
 		return arestas;
 	}
+
+    public List<Aresta> getArestasDesconsideraVisitado(Vertice<T> verticeInicial, int qtdPercorridos) {
+        if (qtdPercorridos == 0)
+            return arestas.stream().filter(e -> !(verticeInicial.getId() == e.getDestino().getId())).collect(Collectors.toList());
+        else
+            return arestas.stream().filter(e -> !e.isVisitado()).collect(Collectors.toList());
+
+
+    }
 
 	public void setArestas(List<Aresta> arestas) {
 		this.arestas = arestas;
@@ -64,11 +89,25 @@ public class Vertice<T> {
         return vertices;
     }
 
+//    @Override
+//    public String toString(){
+//        StringBuilder aux = new StringBuilder("Vértice("+this.getItem()+") = [");
+//        for(int i = 0; i<this.arestas.size(); i++) {
+//            aux.append(this.arestas.get(i).getDestino().item);
+//            if (i < this.arestas.size() - 1)
+//                aux.append(", ");
+//        }
+//
+//        aux.append("]  \n");
+//
+//        return aux.toString();
+//    }
+
     @Override
     public String toString(){
         StringBuilder aux = new StringBuilder("Vértice("+this.getItem()+") = [");
         for(int i = 0; i<this.arestas.size(); i++) {
-            aux.append(this.arestas.get(i).getDestino().item);
+            aux.append(this.arestas.get(i).getDestino().getItem());
             if (i < this.arestas.size() - 1)
                 aux.append(", ");
         }

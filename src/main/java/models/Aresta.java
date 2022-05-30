@@ -18,6 +18,15 @@ public class Aresta {
         return destino;
     }
 
-    
+    public boolean isVisitado() {
+        return destino.isVisitado();
+    }
 
+    @Override
+    public String toString() {
+        return "Aresta{" +
+                "quilometros=" + quilometros +
+                ", destino=" + destino +
+                '}';
+    }
 }
