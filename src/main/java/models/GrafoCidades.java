@@ -14,6 +14,10 @@ public class GrafoCidades extends Grafo<Cidade> {
         super();
     }
 
+    public Vertice<Cidade> getCidadePeloNome(String cidade) {
+        return this.vertices.stream().filter(e -> e.getItem().getNome().equals(cidade)).findFirst().orElse(null);
+    }
+
     // Método que lerá o arquivo de dados e criará todas as cidades.
     public void gerarGrafoComCidades() {
         ArquivoTextoLeitura arquivoEntrada = new ArquivoTextoLeitura(NOME_ARQUIVO);

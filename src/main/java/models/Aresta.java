@@ -1,25 +1,22 @@
 package models;
 
-public class Aresta {
+public class Aresta<T> {
 
     private double quilometros;
-    private Vertice destino;
+    private Vertice<T> destino;
 
     public Aresta(double peso, Vertice dest){
         this.quilometros = peso;
         this.destino = dest;
     }
 
+
     public double getPeso() {
         return this.quilometros;
     }
 
-    public Vertice getDestino() {
+    public Vertice<T> getDestino() {
         return destino;
-    }
-
-    public boolean isVisitado() {
-        return destino.isVisitado();
     }
 
     @Override
