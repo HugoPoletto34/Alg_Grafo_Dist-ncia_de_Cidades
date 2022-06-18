@@ -1,6 +1,9 @@
 import models.Grafo;
 import models.GrafoCidades;
+import models.Vertice;
 import org.junit.Test;
+
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
@@ -55,5 +58,30 @@ public class GrafoTest {
         boolean sd = grafo.temCicloComIntermediario(grafo.getVertice(2), grafo.getVertice(5));
         System.out.println(sd);
 //        grafo.caminhosFechados();
+    }
+
+    @Test
+    public void testeKMCidade2() {
+        Grafo<String> grafo = new Grafo<>();
+
+        grafo.addVertice("a");
+        grafo.addVertice("b");
+        grafo.addVertice("c");
+        grafo.addVertice("d");
+        grafo.addVertice("e");
+        grafo.addVertice("f");
+
+        grafo.getVertice(0).addAresta(6, grafo.getVertice(1));
+        grafo.getVertice(1).addAresta(1, grafo.getVertice(3));
+        grafo.getVertice(2).addAresta(5, grafo.getVertice(0));
+        grafo.getVertice(2).addAresta(1, grafo.getVertice(4));
+        grafo.getVertice(3).addAresta(1, grafo.getVertice(5));
+        grafo.getVertice(4).addAresta(8, grafo.getVertice(5));
+        grafo.getVertice(4).addAresta(1, grafo.getVertice(1));
+        grafo.getVertice(5).addAresta(2, grafo.getVertice(0));
+
+        List<Vertice<String>> list = grafo.dijkstraCaminhoMinimo(grafo.getVertice(2), grafo.getVertice(0));
+        System.out.println(list);
+
     }
 }

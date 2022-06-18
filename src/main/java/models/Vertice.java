@@ -6,10 +6,12 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-public class Vertice<T> {
+public class Vertice<T> implements Comparable<Vertice<T>> {
     private int id;
     private List<Aresta<T>> arestas;
     private boolean visitado = false;
+    double distancia;
+    Vertice<T> predecessor;
 
     public void setVisitado( boolean visitado) {
         this.visitado = visitado;
@@ -60,7 +62,7 @@ public class Vertice<T> {
 
     public void addAresta(double peso, Vertice dest){
         if(!this.existeAresta(dest)){
-            Aresta nova = new Aresta(peso, dest);
+            Aresta nova = new Aresta(this, peso, dest);
             this.arestas.add(nova);
             dest.addAresta(peso, this);
         }
@@ -82,7 +84,7 @@ public class Vertice<T> {
 
     @Override
     public String toString(){
-        StringBuilder aux = new StringBuilder("Vértice("+this.getItem()+") = [");
+        StringBuilder aux = new StringBuilder("Vértice"+this.id+"("+this.getItem()+") = [");
         for(int i = 0; i<this.arestas.size(); i++) {
             aux.append(this.arestas.get(i).getDestino().item);
             if (i < this.arestas.size() - 1)
@@ -100,5 +102,10 @@ public class Vertice<T> {
 
     public T getItem() {
         return item;
+    }
+
+    @Override
+    public int compareTo(Vertice<T> o) {
+        return this.id;
     }
 }
