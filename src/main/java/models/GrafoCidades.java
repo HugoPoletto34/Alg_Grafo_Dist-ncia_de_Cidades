@@ -3,11 +3,13 @@ package models;
 import utilLib.ArquivoTextoLeitura;
 
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class GrafoCidades extends Grafo<Cidade> {
     public final static String NOME_ARQUIVO = "./BaseDados/br.csv";
-    private final List<Node> listaKmCidades = new LinkedList<>();
+    private final List<Node<Cidade>> listaKmCidades = new LinkedList<>();
+    static final int MAX_LIGACOES = 3;
 
 
     public GrafoCidades() {
@@ -43,48 +45,37 @@ public class GrafoCidades extends Grafo<Cidade> {
     }
 
     public void criarLigacoesTresCidadesProximas() {
-        for (int j = 0; j < this.vertices.size(); j++) {
-            Vertice<Cidade> vertice = this.vertices.get(j);
-            for (Vertice<Cidade> prox : this.vertices) {
-                String comp = "origem: " + prox + " - destino: " + vertice;
-                if (!vertice.equals(prox) && !this.listaKmCidades.toString().contains(comp)) {
-                    Node node = new Node(vertice, calcularDistanciaCidades(vertice.getItem(), prox.getItem()), prox);
+        Map<Integer, Vertice<Cidade>> cidades = this.listaKmCidades
+                .stream().map(e -> e.destino)
+                .collect(Collectors.toMap(Vertice<Cidade>::getId, Function.identity()));
+        cidades.put(this.vertices.get(0).getId(), this.vertices.get(0));
+        for (Vertice<Cidade> cidadeAtual : this.vertices) {
+            for (Vertice<Cidade> proxCidade : this.vertices) {
+                if (cidadeAtual.getId() != proxCidade.getId() && !cidades.containsKey(proxCidade.getId())) {
+                    Node<Cidade> node = new Node<>(cidadeAtual, calcularDistanciaCidades(cidadeAtual.getItem(), proxCidade.getItem()), proxCidade);
                     this.listaKmCidades.add(node);
+                    cidades.put(proxCidade.getId(), proxCidade);
                 }
-
             }
+            cidades = new HashMap<>();
+            cidades.put(cidadeAtual.getId(), cidadeAtual);
         }
-        this.listaKmCidades.sort((e1, e2) -> e1.valor.compareTo(e2.valor));
+        this.listaKmCidades.sort(Node::compareTo);
 
         for (Vertice<Cidade> vertice : this.vertices) {
-            List<Node> listFiltered = get3proximas(vertice.getId());
+            List<Node<Cidade>> listFiltered = get3proximas(vertice.getId());
 
-            vertice.addAresta(listFiltered.get(0).valor,
-                listFiltered.get(0).origem.equals(vertice)
-                ? listFiltered.get(0).destino
-                : listFiltered.get(0).origem);
-            vertice.addAresta(listFiltered.get(1).valor,
-                    listFiltered.get(1).origem.equals(vertice)
-                            ? listFiltered.get(1).destino
-                            : listFiltered.get(1).origem);
-            vertice.addAresta(listFiltered.get(2).valor,
-                    listFiltered.get(2).origem.equals(vertice)
-                            ? listFiltered.get(2).destino
-                            : listFiltered.get(2).origem);
-
+            for (Node<Cidade> node : listFiltered) {
+                vertice.addAresta(node.valor, node.destino);
+            }
         }
     }
 
-    private List<Node> get3proximas(int idVertice) {
-        List<Node> listFiltered = this.listaKmCidades.stream().filter
-                ((e) -> e.destino.getId() == idVertice || e.origem.getId() == idVertice)
-                .collect(Collectors.toList());
-        List<Node> listReturn = new ArrayList<>(3);
-        listReturn.add(listFiltered.get(0));
-        listReturn.add(listFiltered.get(1));
-        listReturn.add(listFiltered.get(2));
-
-        return listReturn;
+    private List<Node<Cidade>> get3proximas(int idVertice) {
+        return this.listaKmCidades.stream().filter
+                ((e) -> e.destino.getId() != idVertice && e.origem.getId() == idVertice)
+                .collect(Collectors.toList())
+                .subList(0, MAX_LIGACOES);
     }
 
     // https://stackoverflow.com/questions/27928/calculate-distance-between-two-latitude-longitude-points-haversine-formula

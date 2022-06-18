@@ -53,13 +53,6 @@ public class Grafo<T> {
         return this.vertices.stream().filter(Vertice::isVisitado).collect(Collectors.toList());
     }
 
-    public boolean temCicloComIntermediario(Vertice<T> verticeInicial, Vertice<T> verticeIntermediaria) {
-        Vertice<T> verticeAtual = verticeInicial.getArestas().get(0).getDestino();
-        boolean resposta = temCicloComIntermediario(verticeInicial, verticeInicial, verticeAtual, verticeIntermediaria);
-        this.vertices = this.vertices.stream().peek(e -> e.setVisitado(false)).collect(Collectors.toList());
-        return resposta;
-    }
-
     public List<Vertice<T>> dijkstraCaminhoMinimo(Vertice<T> verticeInicial, Vertice<T> verticeFinal) {
         HashMap<Integer, Vertice<T>> conjuntosExplorados = new HashMap<>();
 
@@ -73,39 +66,35 @@ public class Grafo<T> {
 
         for (int i = 0; i < vertices.size() - 1; i++) {
             Aresta<T> proxArestaCorte = arestasCorte(conjuntosExplorados);
-            if (proxArestaCorte == null) {
+            if (proxArestaCorte == null)
                 break;
-            }
             proxArestaCorte.getDestino().predecessor = proxArestaCorte.getOrigem();
             proxArestaCorte.getDestino().distancia = proxArestaCorte.getPeso() + proxArestaCorte.getOrigem().distancia;
             conjuntosExplorados.put(proxArestaCorte.getDestino().getId(), proxArestaCorte.getDestino());
         }
 
         Stack<Vertice<T>> pilha = new Stack<>();
-        List<Vertice<T>> caminho = new LinkedList<>();
+        List<Vertice<T>> caminho = null;
         Vertice<T> verticeAtual = conjuntosExplorados.get(verticeFinal.getId());
-        if (verticeAtual == null) {
-            return Collections.emptyList();
-        }
-        while (verticeAtual.getId() != verticeInicial.getId()) {
-            pilha.push(verticeAtual);
-            verticeAtual = verticeAtual.predecessor;
-        }
-        pilha.add(verticeAtual);
+        if (verticeAtual != null) {
+            caminho = new LinkedList<>();
+            while (verticeAtual.getId() != verticeInicial.getId()) {
+                pilha.push(verticeAtual);
+                verticeAtual = verticeAtual.predecessor;
+            }
+            pilha.add(verticeAtual);
 
-        while (!pilha.empty()) {
-            caminho.add(pilha.pop());
+            while (!pilha.empty()) {
+                caminho.add(pilha.pop());
+            }
         }
-//        for (Vertice<T> vertice : conjuntosExplorados) {
-//            caminho.add(vertice);
-//            if (vertice.getArestas().stream().anyMatch(e -> e.getDestino().getId() == verticeFinal.getId())) {
-//                caminho.add(verticeFinal);
-//                break;
-//            }
-//
-//        }
 
-        
+        this.vertices.stream().map(v -> {
+            v.distancia = Integer.MAX_VALUE;
+            v.predecessor = null;
+            return v;
+        });
+
         return caminho;
     }
 
@@ -123,60 +112,12 @@ public class Grafo<T> {
                 .orElse(null);
     }
 
-//    public List<Vertice<T>> algoritmoDijkstra(Vertice<T> verticeInicial, Vertice<T> verticeFinal){
-//        int[] vectEtiquetas = new int[getV()];//Verifica se o vertice ja esta "checado"
-//        int[] vectCustos = new int[getV()];//custo acumulado
-//        int[] percursoMinimo = new int[getV()]; //vai ter o percurso minimo de uma cidade a outra
-//        int w, w0 = 0;//w0 -> posicao do vector onde esta o percurso minimo.
-//        boolean stop;
-//
-////-----------------------------------------------------
-//
-//        for (w = 0; w < getV(); w++){//inicializa todas a vareaveis
-//            vectEtiquetas[w] = -1;
-//            vectCustos[w] = custo(s_inicial, w);//coloca no vector qual o custo de ir de s_inicial para w
-//            percursoMinimo[w] = s_inicial;
-//        }
-//
-//        vectEtiquetas[s_inicial] = s_inicial;//posicao onde comeco a procura
-//        vectCustos[s_inicial] = 0;//custo inicial e 0
-//        stop = false;
-//
-//        while (!stop){
-//            int minimoCusto = INFINITO;
-//            for (w = 0; w < getV(); w++) {
-//                if (vectEtiquetas[w] == -1 && (vectCustos[w] < minimoCusto)){//Determina o minimo de todos os vertices k inda nao foram "checados"
-//                    w0 = w;	//diz a posicao onde esta o minimo												//
-//                    minimoCusto = vectCustos[w0];
-//                }
-//            }
-//            if ((minimoCusto == INFINITO) || (s_final == w0)) // Cheguei a sulução!!!
-//                stop = true;
-//
-//            else{
-//                vectEtiquetas[w0] = percursoMinimo[w0];
-//                for (w = 0; w < getV(); w++){
-//                    if (vectCustos[w] > (vectCustos[w0] + custo(w0, w))){ //minimiza o custo
-//                        vectCustos[w] = vectCustos[w0] + custo(w0, w);
-//                        percursoMinimo[w] = w0;
-//                    }
-//                }
-//            }
-//        }
-//        System.out.println("Para ir de "+cidA+" ate "+cidB+" tenho que passar em:");
-//        int anterior = s_final;
-//        //apresenta o percurso do fim para o inicio
-//        ArrayList<Cidade> listAux = new ArrayList<Cidade>();//representara as cidades por onde passo
-//        listAux.add(CFinal);
-//        while(anterior != s_inicial){
-//            anterior = percursoMinimo[anterior];
-//            listAux.add(listC.get(anterior));
-//        }
-//        mostrarListaCidadesPercorridas(listAux);
-//        ArrayList<Estrada> LE_ondePasso = constroiPercurso(listAux, listE); //Devolve estradas por onde passo
-//
-//        return LE_ondePasso;
-//    }
+    public boolean temCicloComIntermediario(Vertice<T> verticeInicial, Vertice<T> verticeIntermediaria) {
+        Vertice<T> verticeAtual = verticeInicial.getArestas().get(0).getDestino();
+        boolean resposta = temCicloComIntermediario(verticeInicial, verticeInicial, verticeAtual, verticeIntermediaria);
+        this.vertices = this.vertices.stream().peek(e -> e.setVisitado(false)).collect(Collectors.toList());
+        return resposta;
+    }
 
     private boolean temCicloComIntermediario(Vertice<T> verticeInicial, Vertice<T> verticeAnterior, Vertice<T> verticeAtual, Vertice<T> verticeIntermediaria) {
         boolean resposta = false;
