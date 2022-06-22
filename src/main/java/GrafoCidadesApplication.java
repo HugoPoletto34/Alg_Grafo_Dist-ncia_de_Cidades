@@ -44,7 +44,18 @@ public class GrafoCidadesApplication {
 			switch (opcao) {
 				case 1:
 					System.out.println("\nBusca em largura:\n");
-					grafoCidades.buscaEmLargura();
+					while (verticeInicial == null) {
+						System.out.println("Insira o nome da cidade de partida: ");
+						String nomeVerticeInicial = leitor.nextLine();
+						verticeInicial = grafoCidades.getCidadePeloNome(nomeVerticeInicial);
+						if (nomeVerticeInicial == null)
+							System.out.println("Nome da cidade inválida ou não está presente no grafo.");
+					}
+					int indice = 1;
+					for (Vertice<Cidade> cidade : grafoCidades.buscaEmLargura(verticeInicial)) {
+						System.out.println(indice + " - " + cidade.getItem().getNome());
+						indice++;
+					}
 					break;
 				case 2:
 					System.out.println("\nDescubra se há ciclo a partir de uma cidade tendo outra cidade como intermediário.");

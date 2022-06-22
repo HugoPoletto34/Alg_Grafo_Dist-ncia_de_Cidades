@@ -54,6 +54,10 @@ public class Grafo<T> {
     }
 
     public List<Vertice<T>> dijkstraCaminhoMinimo(Vertice<T> verticeInicial, Vertice<T> verticeFinal) {
+        List<Vertice<T>> caminho = null;
+
+        if (!this.buscaEmLargura(verticeInicial).contains(verticeFinal))
+            return caminho;
         HashMap<Integer, Vertice<T>> conjuntosExplorados = new HashMap<>();
 
         for (Vertice<T> vertice : this.vertices) {
@@ -74,7 +78,6 @@ public class Grafo<T> {
         }
 
         Stack<Vertice<T>> pilha = new Stack<>();
-        List<Vertice<T>> caminho = null;
         Vertice<T> verticeAtual = conjuntosExplorados.get(verticeFinal.getId());
         if (verticeAtual != null) {
             caminho = new LinkedList<>();
@@ -113,6 +116,8 @@ public class Grafo<T> {
     }
 
     public boolean temCicloComIntermediario(Vertice<T> verticeInicial, Vertice<T> verticeIntermediaria) {
+        if (!this.buscaEmLargura(verticeInicial).contains(verticeIntermediaria))
+            return false;
         Vertice<T> verticeAtual = verticeInicial.getArestas().get(0).getDestino();
         boolean resposta = temCicloComIntermediario(verticeInicial, verticeInicial, verticeAtual, verticeIntermediaria);
         this.vertices = this.vertices.stream().peek(e -> e.setVisitado(false)).collect(Collectors.toList());
@@ -139,6 +144,28 @@ public class Grafo<T> {
 
         return resposta;
 
+    }
+
+    public List<Vertice<T>> buscaEmLargura(Vertice<T> verticeInicial){
+        ArrayList<Vertice<T>> marcados = new ArrayList<>();
+        ArrayList<Vertice<T>> fila = new ArrayList<>();
+        List<Vertice<T>> finalizados = new LinkedList<>();
+
+        marcados.add(verticeInicial);
+        fila.add(verticeInicial);
+        while(!fila.isEmpty()){
+            Vertice<T> visitado = fila.get(0);
+            for(int i=0; i < visitado.getArestas().size(); i++){
+                Vertice<T> proximo = visitado.getArestas().get(i).getDestino();
+                if (!marcados.contains(proximo)){
+                    marcados.add(proximo);
+                    finalizados.add(proximo);
+                    fila.add(proximo);
+                }
+            }
+            fila.remove(0);
+        }
+        return finalizados;
     }
 
     @Override
